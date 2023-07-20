@@ -1,7 +1,7 @@
-variable vpc_cdir {}
+variable "vpc_cdir" {}
 
-variable project_name {}
+variable "project_name" {}
 
-variable environment {}
+variable "environment" {}
 
-variable subnet_cdir {}
+variable "subnet_cdir" {}
