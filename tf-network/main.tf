@@ -18,6 +18,15 @@ resource "aws_vpc" "vpc" {
   }
 }
 
+# Create Internet Gateway
+resource "aws_internet_gateway" "internet-gateway" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-igw"
+  }
+}
+
 #Create web subnet az1
 resource "aws_subnet" "web-az1" {
   vpc_id                  = aws_vpc.vpc.id
@@ -64,4 +73,29 @@ resource "aws_subnet" "data-az2" {
   tags = {
     Name = "${var.project_name}-${var.environment}-data-az2"
   }
+}
+
+#Public Route Table
+resource "aws_route_table" "web-rt" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.internet-gateway.id
+  }
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-rt"
+  }
+}
+
+#Public Subnet Associations
+resource "aws_route_table_association" "web-sn-az1" {
+  subnet_id      = aws_subnet.web-az1.id
+  route_table_id = aws_route_table.web-rt.id
+}
+
+resource "aws_route_table_association" "web-sn-az2" {
+  subnet_id      = aws_subnet.web-az2.id
+  route_table_id = aws_route_table.web-rt.id
 }
