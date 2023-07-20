@@ -7,7 +7,6 @@ locals {
   db_cidr_blocks = var.subnet_cdir["db"]
 }
 
-
 #########################################
 ############## DATA SOURCES #############
 #########################################
@@ -81,7 +80,7 @@ resource "aws_route_table" "web-rt" {
 
 #Web Subnet Associations
 resource "aws_route_table_association" "web" {
-  count          = length(local.web_cidr_blocks)
+  count          = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
   subnet_id      = aws_subnet.web[count.index].id
   route_table_id = aws_route_table.web-rt.id
 }
