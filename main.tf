@@ -1,4 +1,14 @@
 #########################################
+############## locals ###################
+#########################################
+
+locals {
+  web_cidr_blocks = var.subnet_cdir["web"]
+  db_cidr_blocks = var.subnet_cdir["db"]
+}
+
+
+#########################################
 ############## DATA SOURCES #############
 #########################################
 
@@ -27,51 +37,31 @@ resource "aws_internet_gateway" "internet-gateway" {
   }
 }
 
-#Create web subnet az1
-resource "aws_subnet" "web-az1" {
+#Create web subnets
+resource "aws_subnet" "web" {
+  count                   = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
+
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.subnet_cdir["web"][0]
-  availability_zone       = data.aws_availability_zones.az.names[0]
+  cidr_block              = local.web_cidr_blocks[count.index]
+  availability_zone       = data.aws_availability_zones.az.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-web-az1"
+    Name = "${var.project_name}-${var.environment}-web-az-${count.index + 1}"
   }
 }
 
-#Create web subnet az2
-resource "aws_subnet" "web-az2" {
+#Create db subnets
+resource "aws_subnet" "data" {
+  count                   = local.db_cidr_blocks != null ? length(local.db_cidr_blocks) : 0
+  
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.subnet_cdir["web"][1]
-  availability_zone       = data.aws_availability_zones.az.names[1]
-  map_public_ip_on_launch = true
+  cidr_block              = local.db_cidr_blocks[count.index]
+  availability_zone       = data.aws_availability_zones.az.names[count.index]
+  map_public_ip_on_launch = false
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-web-az2"
-  }
-}
-
-#Create db subnet az1
-resource "aws_subnet" "data-az1" {
-  vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.subnet_cdir["db"][0]
-  availability_zone       = data.aws_availability_zones.az.names[0]
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "${var.project_name}-${var.environment}-data-az1"
-  }
-}
-
-#Create db subnet az2
-resource "aws_subnet" "data-az2" {
-  vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.subnet_cdir["db"][1]
-  availability_zone       = data.aws_availability_zones.az.names[1]
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "${var.project_name}-${var.environment}-data-az2"
+    Name = "${var.project_name}-${var.environment}-data-az-${count.index + 1}"
   }
 }
 
@@ -89,13 +79,9 @@ resource "aws_route_table" "web-rt" {
   }
 }
 
-#Public Subnet Associations
-resource "aws_route_table_association" "web-sn-az1" {
-  subnet_id      = aws_subnet.web-az1.id
-  route_table_id = aws_route_table.web-rt.id
-}
-
-resource "aws_route_table_association" "web-sn-az2" {
-  subnet_id      = aws_subnet.web-az2.id
+#Web Subnet Associations
+resource "aws_route_table_association" "web" {
+  count          = length(local.web_cidr_blocks)
+  subnet_id      = aws_subnet.web[count.index].id
   route_table_id = aws_route_table.web-rt.id
 }
