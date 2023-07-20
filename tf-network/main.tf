@@ -1,3 +1,5 @@
+data "aws_availability_zones" "az" {}
+
 #Create VPC
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cdir
