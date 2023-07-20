@@ -18,7 +18,7 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-#Create web subnet az2
+#Create web subnet az1
 resource "aws_subnet" "web-az1" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.subnet_cdir["web"][0]
