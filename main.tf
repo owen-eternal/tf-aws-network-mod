@@ -33,7 +33,7 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-# Create Internet Gateway
+#Create Internet Gateway
 resource "aws_internet_gateway" "internet-gateway" {
   vpc_id = aws_vpc.vpc.id
 
@@ -93,7 +93,7 @@ resource "aws_route_table_association" "web" {
 
 resource "aws_security_group" "security-groups" {
   for_each    = local.security_group_description
-  name        = "${var.project_name}_firewall"
+  name        = "${var.project_name}_${each.key}_firewall"
   description = each.value
   vpc_id      = aws_vpc.vpc.id
 
