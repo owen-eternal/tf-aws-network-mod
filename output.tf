@@ -1,6 +1,6 @@
-#############################################
-################ Outputs ####################
-#############################################
+# #############################################
+# ################ Outputs ####################
+# #############################################
 
 output "vpc" {
   value = aws_vpc.vpc.id
@@ -20,4 +20,12 @@ output "db_subnets" {
 
 output "web_route_table" {
   value = aws_route_table.web-rt.id
+}
+
+output "web_security_group_id" {
+  value = aws_security_group.security-groups["web"].id
+}
+
+output "db_security_group_id" {
+  value = aws_security_group.security-groups["db"].id
 }
