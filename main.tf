@@ -8,8 +8,14 @@ locals {
   db_cidr_blocks = var.subnet_cdir["db"]
 
   security_group_description = {
-    "web" = "Control inbound/outbound traffic in and out web servers"
-    "db"  = "Control inbound/outbound traffic in and database servers"
+    "web" = {
+      "description" = "Control inbound/outbound traffic in and out web servers"
+      "port"        = coalesce(var.web_server_port, 80)
+    },
+    "db" = {
+      "description" = "Control inbound/outbound traffic in and database servers"
+      "port"        = coalesce(var.db_server_port, 80)
+    }
   }
 }
 
@@ -59,7 +65,7 @@ resource "aws_subnet" "web" {
 #Create db subnets
 resource "aws_subnet" "data" {
   count                   = local.db_cidr_blocks != null ? length(local.db_cidr_blocks) : 0
-  
+
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = local.db_cidr_blocks[count.index]
   availability_zone       = data.aws_availability_zones.az.names[count.index]
@@ -87,18 +93,26 @@ resource "aws_route_table" "web-rt" {
 #Web Subnet Associations
 resource "aws_route_table_association" "web" {
   count          = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
+  
   subnet_id      = aws_subnet.web[count.index].id
   route_table_id = aws_route_table.web-rt.id
 }
 
 resource "aws_security_group" "security-groups" {
   for_each    = local.security_group_description
+
   name        = "${var.project_name}_${each.key}_firewall"
-  description = each.value
+  description = each.value["description"]
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    description = "SSH traffic only"
+    from_port   = each.value["port"]
+    to_port     = each.value["port"]
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
