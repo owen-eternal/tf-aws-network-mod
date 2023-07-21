@@ -4,7 +4,13 @@
 
 locals {
   web_cidr_blocks = var.subnet_cdir["web"]
+
   db_cidr_blocks = var.subnet_cdir["db"]
+
+  security_group_description = {
+    "web" = "Control inbound/outbound traffic in and out web servers"
+    "db"  = "Control inbound/outbound traffic in and database servers"
+  }
 }
 
 #########################################
@@ -85,12 +91,13 @@ resource "aws_route_table_association" "web" {
   route_table_id = aws_route_table.web-rt.id
 }
 
-resource "aws_security_group" "web-sg" {
-  name        = "${var.project_name}-websg"
-  description = "Control inbound/outbound traffic to web servers"
+resource "aws_security_group" "security-groups" {
+  for_each    = local.security_group_description
+  name        = "${var.project_name}_firewall"
+  description = each.value
   vpc_id      = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-sg"
+    Name = "${var.project_name}-${var.environment}-${each.key}-sg"
   }
 }
