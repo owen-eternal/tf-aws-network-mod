@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "internet-gateway" {
 
 #Create web subnets
 resource "aws_subnet" "web" {
-  count                   = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
+  count = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
 
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = local.web_cidr_blocks[count.index]
@@ -64,7 +64,7 @@ resource "aws_subnet" "web" {
 
 #Create db subnets
 resource "aws_subnet" "data" {
-  count                   = local.db_cidr_blocks != null ? length(local.db_cidr_blocks) : 0
+  count = local.db_cidr_blocks != null ? length(local.db_cidr_blocks) : 0
 
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = local.db_cidr_blocks[count.index]
@@ -92,14 +92,14 @@ resource "aws_route_table" "web-rt" {
 
 #Web Subnet Associations
 resource "aws_route_table_association" "web" {
-  count          = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
-  
+  count = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
+
   subnet_id      = aws_subnet.web[count.index].id
   route_table_id = aws_route_table.web-rt.id
 }
 
 resource "aws_security_group" "security-groups" {
-  for_each    = local.security_group_description
+  for_each = local.security_group_description
 
   name        = "${var.project_name}_${each.key}_firewall"
   description = each.value["description"]
