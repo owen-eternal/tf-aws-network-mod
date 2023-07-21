@@ -9,11 +9,11 @@ locals {
 
   security_group_description = {
     "web" = {
-      "description" = "Control inbound/outbound traffic in and out web servers"
+      "description" = "Control inbound/outbound traffic in and out of the web servers"
       "port"        = coalesce(var.web_server_port, 80)
     },
     "db" = {
-      "description" = "Control inbound/outbound traffic in and database servers"
+      "description" = "Control inbound/outbound traffic in and out of the database servers"
       "port"        = coalesce(var.db_server_port, 80)
     }
   }
@@ -90,7 +90,7 @@ resource "aws_route_table" "web-rt" {
   }
 }
 
-#Web Subnet Associations
+#Web: route table and web subnet association
 resource "aws_route_table_association" "web" {
   count = local.web_cidr_blocks != null ? length(local.web_cidr_blocks) : 0
 
