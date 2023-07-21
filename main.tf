@@ -84,3 +84,13 @@ resource "aws_route_table_association" "web" {
   subnet_id      = aws_subnet.web[count.index].id
   route_table_id = aws_route_table.web-rt.id
 }
+
+resource "aws_security_group" "web-sg" {
+  name        = "${var.project_name}-websg"
+  description = "Control inbound/outbound traffic to web servers"
+  vpc_id      = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-sg"
+  }
+}
