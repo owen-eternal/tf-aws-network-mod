@@ -2,23 +2,23 @@
 # ################ Outputs ####################
 # #############################################
 
-output "vpc" {
+output "vpc_id" {
   value = aws_vpc.vpc.id
 }
 
-output "internet_gateway" {
+output "internet_gateway_id" {
   value = aws_internet_gateway.internet-gateway.id
 }
 
-output "web_subnets" {
+output "web_subnets_id" {
   value = aws_subnet.web[*].id
 }
 
-output "db_subnets" {
+output "db_subnets_ids" {
   value = aws_subnet.data[*].id
 }
 
-output "web_route_table" {
+output "web_route_table_id" {
   value = aws_route_table.web-rt.id
 }
 
