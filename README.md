@@ -32,7 +32,7 @@ Additionally, the module provides optional input variables:
 
 1. `web_server_port:` This optional input of type `string` that allows users to specify a custom port for the Web Security Group. If left unset (or set as null), it defaults to port `80`, providing a convenient default value.
 
-1. `db_server_port:` This optional input of type string that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
+1. `db_server_port:` This optional input of type `string` that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
 
 By utilizing these input variables, users have the flexibility to tailor the module's behavior to their specific requirements and create VPC networks with custom configurations and security group port settings.
 
