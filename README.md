@@ -16,9 +16,9 @@ By orchestrating these components, the module creates a well-structured and secu
 
 ## Instructions
 
-# Input Variables
+**This module provides a set of input and output variables that enable users to customize and access the parameters within the module. The input variables include:**
 
-This module provides a set of input and output variables that enable users to customize and access the parameters within the module. The input variables include:
+# Input Variables
 
 1. `vpc_cdir:` Required input of type `string` that represents the CIDR Block Range for the VPC network. Users must specify the valid CIDR range they want to use for their VPC.
 
@@ -35,3 +35,19 @@ Additionally, the module provides optional input variables:
 1. `db_server_port:` This optional input of type string that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
 
 By utilizing these input variables, users have the flexibility to tailor the module's behavior to their specific requirements and create VPC networks with custom configurations and security group port settings.
+
+# Output Variables
+
+`vpc_id:` Parameter of type `string`, serves as a reference to the VPC ID. It allows users to easily access and identify the specific VPC associated with their infrastructure.
+
+`internet_gateway_id:` Parameter of type `string`, serves as a reference to the Internet Gateway. By providing this parameter, users can efficiently link their VPC to the internet, enabling inbound and outbound communication with external networks.
+
+web_subnets_id: Parameter of type `list`, used to reference the Public web subnet IDs. It allows users to access and manage multiple web subnets easily, which are typically used for hosting web applications in different Availability Zones (AZs).
+
+`db_subnets_ids:` Parameter of type `list`, used to reference the Public database subnet IDs. It enables users to handle multiple database subnets conveniently, ensuring secure and isolated storage for their database resources.
+
+`web_route_table_id:` Parameter of type `string`, used to reference the Public web route table IDs. By providing this value, users can effectively direct network traffic from the internet to the web subnets, facilitating accessibility to their web applications.
+
+`web_security_group_id:` Parameter of type `string` and allows users to reference the security group dedicated to web servers. It provides an additional layer of security by controlling inbound and outbound traffic for web applications.
+
+`db_security_group_id:` Parameter of type `string`, serves as a reference to the security group designated for database servers. By utilizing this value, users can manage access controls and secure communication for their database resources.
