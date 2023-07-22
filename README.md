@@ -36,18 +36,50 @@ Additionally, the module provides optional input variables:
 
 By utilizing these input variables, users have the flexibility to tailor the module's behavior to their specific requirements and create VPC networks with custom configurations and security group port settings.
 
+usage:
+
+```hcl
+    module "tf-network-module" {
+        source          = git@github.com:owen-eternal/tf-netwok-module.git
+        vpc_cdir        = "10.0.0.0/16"
+
+        project_name    = "your-project-name"
+
+        environment     = terraform.workspace
+
+        web_server_port = null
+
+        db_server_port  = 443
+
+        subnet_cdir     = {
+                web = ["10.0.0.0/18", "10.0.64.0/18"]
+                db  = ["10.0.128.0/18", "10.0.192.0/18"]
+            }
+    }
+```
+
 # Output Variables
 
 `vpc_id:` Parameter of type `string`, serves as a reference to the VPC ID. It allows users to easily access and identify the specific VPC associated with their infrastructure.
 
 `internet_gateway_id:` Parameter of type `string`, serves as a reference to the Internet Gateway. By providing this parameter, users can efficiently link their VPC to the internet, enabling inbound and outbound communication with external networks.
 
-web_subnets_id: Parameter of type `list`, used to reference the Public web subnet IDs. It allows users to access and manage multiple web subnets easily, which are typically used for hosting web applications in different Availability Zones (AZs).
+`web_subnet_ids:` Parameter of type `list`, used to reference the Public web subnet IDs. It allows users to access and manage multiple web subnets easily, which are typically used for hosting web applications in different Availability Zones (AZs).
 
-`db_subnets_ids:` Parameter of type `list`, used to reference the Public database subnet IDs. It enables users to handle multiple database subnets conveniently, ensuring secure and isolated storage for their database resources.
+`db_subnet_ids:` Parameter of type `list`, used to reference the Public database subnet IDs. It enables users to handle multiple database subnets conveniently, ensuring secure and isolated storage for their database resources.
 
 `web_route_table_id:` Parameter of type `string`, used to reference the Public web route table IDs. By providing this value, users can effectively direct network traffic from the internet to the web subnets, facilitating accessibility to their web applications.
 
 `web_security_group_id:` Parameter of type `string` and allows users to reference the security group dedicated to web servers. It provides an additional layer of security by controlling inbound and outbound traffic for web applications.
 
 `db_security_group_id:` Parameter of type `string`, serves as a reference to the security group designated for database servers. By utilizing this value, users can manage access controls and secure communication for their database resources.
+
+usage:
+```hcl
+    resource "aws_instance" "application_server-b" {
+        ami                    = ...
+        instance_type          = ...
+        key_name               = ...
+        subnet_id              = module.tf-network-module.web_subnet_ids[0]    vpc_security_group_ids = [module.tf-network-module.web_security_group_id]
+    }
+```
