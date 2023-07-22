@@ -14,11 +14,11 @@ Security Groups: The module configures Security Groups that are used to control 
 
 By orchestrating these components, the module creates a well-structured and secure infrastructure that supports web applications while effectively managing network traffic and access controls.
 
-## Instructions
+# Instructions
 
 **This module provides a set of input and output variables that enable users to customize and access the parameters within the module. The input variables include:**
 
-# Input Variables
+## Input Variables
 
 1. `vpc_cdir:` Required input of type `string` that represents the CIDR Block Range for the VPC network. Users must specify the valid CIDR range they want to use for their VPC.
 
@@ -32,7 +32,7 @@ Additionally, the module provides optional input variables:
 
 1. `web_server_port:` This optional input of type `string` that allows users to specify a custom port for the Web Security Group. If left unset (or set as null), it defaults to port `80`, providing a convenient default value.
 
-1. `db_server_port:` This optional input of type string that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
+1. `db_server_port:` This optional input of type `string` that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
 
 By utilizing these input variables, users have the flexibility to tailor the module's behavior to their specific requirements and create VPC networks with custom configurations and security group port settings.
 
@@ -52,13 +52,13 @@ usage:
         db_server_port  = 443
 
         subnet_cdir     = {
-                web = ["10.0.0.0/18", "10.0.64.0/18"]
-                db  = ["10.0.128.0/18", "10.0.192.0/18"]
-            }
+            web = ["10.0.0.0/18", "10.0.64.0/18"]
+            db  = ["10.0.128.0/18", "10.0.192.0/18"]
+        }
     }
 ```
 
-# Output Variables
+## Output Variables
 
 `vpc_id:` Parameter of type `string`, serves as a reference to the VPC ID. It allows users to easily access and identify the specific VPC associated with their infrastructure.
 
