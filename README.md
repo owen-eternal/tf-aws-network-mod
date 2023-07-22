@@ -14,11 +14,11 @@ Security Groups: The module configures Security Groups that are used to control 
 
 By orchestrating these components, the module creates a well-structured and secure infrastructure that supports web applications while effectively managing network traffic and access controls.
 
-## Instructions
+# Instructions
 
 **This module provides a set of input and output variables that enable users to customize and access the parameters within the module. The input variables include:**
 
-# Input Variables
+## Input Variables
 
 1. `vpc_cdir:` Required input of type `string` that represents the CIDR Block Range for the VPC network. Users must specify the valid CIDR range they want to use for their VPC.
 
@@ -58,7 +58,7 @@ usage:
     }
 ```
 
-# Output Variables
+## Output Variables
 
 `vpc_id:` Parameter of type `string`, serves as a reference to the VPC ID. It allows users to easily access and identify the specific VPC associated with their infrastructure.
 
