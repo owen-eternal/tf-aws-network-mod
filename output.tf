@@ -10,11 +10,11 @@ output "internet_gateway_id" {
   value = aws_internet_gateway.internet-gateway.id
 }
 
-output "web_subnets_id" {
+output "web_subnet_ids" {
   value = aws_subnet.web[*].id
 }
 
-output "db_subnets_ids" {
+output "db_subnet_ids" {
   value = aws_subnet.data[*].id
 }
 
