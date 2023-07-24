@@ -1,16 +1,16 @@
-# TF-NETWORK-MODULE:
+# TF-AWS-NETWORK-MODULE
 
 ## Infrastructure
 
 The purpose of this module is to provision a specific infrastructure with the following components:
 
-Subnets: It creates two "web application" subnets that are public and distributed across their respective Availability Zones (AZs). Additionally, it sets up two "database subnets" that are private and distributed across their respective AZs. This arrangement ensures separation and security for different types of resources within the Virtual Private Cloud (VPC).
+- Subnets: It creates two "web application" subnets that are public and distributed across their respective Availability Zones (AZs). Additionally, it sets up two "database subnets" that are private and distributed across their respective AZs. This arrangement ensures separation and security for different types of resources within the Virtual Private Cloud (VPC).
 
-Route Tables: The module establishes a single "Public Route Table" that facilitates the routing of traffic from the internet to the web application subnets. This allows users to access the web application from the public internet.
+- Route Tables: The module establishes a single "Public Route Table" that facilitates the routing of traffic from the internet to the web application subnets. This allows users to access the web application from the public internet.
 
-Internet Gateway: An Internet Gateway is provisioned to enable inbound and outbound internet traffic flow for the VPC. This gateway acts as a bridge between the VPC and the public internet.
+- Internet Gateway: An Internet Gateway is provisioned to enable inbound and outbound internet traffic flow for the VPC. This gateway acts as a bridge between the VPC and the public internet.
 
-Security Groups: The module configures Security Groups that are used to control traffic both inbound and outbound for the servers. Security Groups act as virtual firewalls, ensuring that only authorized traffic can access the servers and resources in the VPC while providing an additional layer of protection.
+- Security Groups: The module configures Security Groups that are used to control traffic both inbound and outbound for the servers. Security Groups act as virtual firewalls, ensuring that only authorized traffic can access the servers and resources in the VPC while providing an additional layer of protection.
 
 By orchestrating these components, the module creates a well-structured and secure infrastructure that supports web applications while effectively managing network traffic and access controls.
 
@@ -80,7 +80,6 @@ usage:
         ami                    = ...
         instance_type          = ...
         key_name               = ...
-        subnet_id              = module.tf-network-module.web_subnet_ids[0]
-        vpc_security_group_ids = [module.tf-network-module.web_security_group_id]
+        subnet_id              = module.tf-network-module.web_subnet_ids[0]    vpc_security_group_ids = [module.tf-network-module.web_security_group_id]
     }
 ```
