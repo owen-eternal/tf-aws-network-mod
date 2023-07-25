@@ -1,4 +1,4 @@
-# TF-AWS-NETWORK-MODULE
+# TF-AWS-NETWORK-MOD
 
 ## Infrastructure
 
