@@ -34,6 +34,6 @@ output "tag_name" {
   value = local.tag_name
 }
 
-output "vpc_zone_identifiers" {
+output "availability_zones" {
   value = local.availability_zones
 }
