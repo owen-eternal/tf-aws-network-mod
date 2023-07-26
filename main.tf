@@ -4,13 +4,8 @@
 
 locals {
   availability_zones = slice(data.aws_availability_zones.az.names, 0, length(local.web_cidr_blocks))
-
-  tag_name        = "${var.project_name}-${var.environment}"
-
-  web_cidr_blocks = var.subnet_cdir["web"]
-
-  db_cidr_blocks  = var.subnet_cdir["db"]
-  
+  db_cidr_blocks     = var.subnet_cdir["db"]
+  web_cidr_blocks    = var.subnet_cdir["web"]
   security_group_description = {
     "web" = {
       "description" = "Control inbound/outbound traffic in and out of the web servers"
@@ -21,6 +16,7 @@ locals {
       "port"        = coalesce(var.db_server_port, 80)
     }
   }
+  tag_name = "${var.project_name}-${var.environment}"
 }
 
 #########################################
