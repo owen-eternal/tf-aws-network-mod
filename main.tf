@@ -3,6 +3,8 @@
 #########################################
 
 locals {
+  availability_zones = slice(data.aws_availability_zones.az.names, 0, length(local.web_cidr_blocks))
+
   tag_name        = "${var.project_name}-${var.environment}"
 
   web_cidr_blocks = var.subnet_cdir["web"]
@@ -56,7 +58,7 @@ resource "aws_subnet" "web" {
 
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = local.web_cidr_blocks[count.index]
-  availability_zone       = data.aws_availability_zones.az.names[count.index]
+  availability_zone       = local.availability_zones[count.index]
   map_public_ip_on_launch = true
 
   tags = {
@@ -70,7 +72,7 @@ resource "aws_subnet" "data" {
 
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = local.db_cidr_blocks[count.index]
-  availability_zone       = data.aws_availability_zones.az.names[count.index]
+  availability_zone       = local.availability_zones[count.index]
   map_public_ip_on_launch = false
 
   tags = {
