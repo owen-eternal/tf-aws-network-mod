@@ -29,3 +29,7 @@ output "web_security_group_id" {
 output "db_security_group_id" {
   value = aws_security_group.security-groups["db"].id
 }
+
+output "tag_name" {
+  value = local.tag_name
+}
