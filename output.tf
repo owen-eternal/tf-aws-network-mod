@@ -33,3 +33,7 @@ output "db_security_group_id" {
 output "tag_name" {
   value = local.tag_name
 }
+
+output "vpc_zone_identifiers" {
+  value = local.availability_zones
+}
