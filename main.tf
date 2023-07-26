@@ -3,10 +3,12 @@
 #########################################
 
 locals {
+  tag_name        = "${var.project_name}-${var.environment}"
+
   web_cidr_blocks = var.subnet_cdir["web"]
 
-  db_cidr_blocks = var.subnet_cdir["db"]
-
+  db_cidr_blocks  = var.subnet_cdir["db"]
+  
   security_group_description = {
     "web" = {
       "description" = "Control inbound/outbound traffic in and out of the web servers"
@@ -35,7 +37,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-vpc"
+    Name = "${local.tag_name}-vpc"
   }
 }
 
@@ -44,7 +46,7 @@ resource "aws_internet_gateway" "internet-gateway" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-igw"
+    Name = "${local.tag_name}-igw"
   }
 }
 
@@ -58,7 +60,7 @@ resource "aws_subnet" "web" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-web-az-${count.index + 1}"
+    Name = "${local.tag_name}-web-az-${count.index + 1}"
   }
 }
 
@@ -72,7 +74,7 @@ resource "aws_subnet" "data" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-data-az-${count.index + 1}"
+    Name = "${local.tag_name}-data-az-${count.index + 1}"
   }
 }
 
@@ -86,7 +88,7 @@ resource "aws_route_table" "web-rt" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-rt"
+    Name = "${local.tag_name}-rt"
   }
 }
 
@@ -127,6 +129,6 @@ resource "aws_security_group" "security-groups" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-${each.key}-sg"
+    Name = "${local.tag_name}-${each.key}-sg"
   }
 }
