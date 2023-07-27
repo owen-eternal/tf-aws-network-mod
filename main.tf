@@ -6,17 +6,7 @@ locals {
   availability_zones = slice(data.aws_availability_zones.az.names, 0, length(local.web_cidr_blocks))
   db_cidr_blocks     = var.subnet_cdir["db"]
   web_cidr_blocks    = var.subnet_cdir["web"]
-  security_group_description = {
-    "web" = {
-      "description" = "Control inbound/outbound traffic in and out of the web servers"
-      "port"        = coalesce(var.web_server_port, 80)
-    },
-    "db" = {
-      "description" = "Control inbound/outbound traffic in and out of the database servers"
-      "port"        = coalesce(var.db_server_port, 80)
-    }
-  }
-  tag_name = "${var.project_name}-${var.environment}"
+  tag_name           = "${var.environment}-${var.project_name}"
 }
 
 #########################################
@@ -96,37 +86,4 @@ resource "aws_route_table_association" "web" {
 
   subnet_id      = aws_subnet.web[count.index].id
   route_table_id = aws_route_table.web-rt.id
-}
-
-resource "aws_security_group" "security-groups" {
-  for_each = local.security_group_description
-
-  name        = "${var.project_name}_${each.key}_firewall"
-  description = each.value["description"]
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    from_port   = each.value["port"]
-    to_port     = each.value["port"]
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${local.tag_name}-${each.key}-sg"
-  }
 }
