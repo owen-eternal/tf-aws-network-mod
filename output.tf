@@ -2,6 +2,14 @@
 # ################ Outputs ####################
 # #############################################
 
+output "project_name" {
+  value = var.project_name
+}
+
+output "environment" {
+  value = var.environment
+}
+
 output "vpc_id" {
   value = aws_vpc.vpc.id
 }
@@ -20,14 +28,6 @@ output "db_subnet_ids" {
 
 output "web_route_table_id" {
   value = aws_route_table.web-rt.id
-}
-
-output "web_security_group_id" {
-  value = aws_security_group.security-groups["web"].id
-}
-
-output "db_security_group_id" {
-  value = aws_security_group.security-groups["db"].id
 }
 
 output "tag_name" {
