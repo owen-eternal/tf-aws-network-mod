@@ -34,6 +34,8 @@ Additionally, the module provides optional input variables:
 
 `db_server_port:` This optional input of type `string` that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
 
+`ipaddr` is a required input of type `string`, enabling users to specify the IP address of the host that will access the servers via SSH. This parameter is essential for establishing secure remote access to the servers and managing the infrastructure effectively.
+
 By utilizing these input variables, users have the flexibility to tailor the module's behavior to their specific requirements and create VPC networks with custom configurations and security group port settings.
 
 usage:
