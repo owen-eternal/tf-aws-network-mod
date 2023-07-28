@@ -23,11 +23,15 @@ output "web_route_table_id" {
 }
 
 output "web_security_group_id" {
-  value = aws_security_group.security-groups["web"].id
+  value = aws_security_group.web-security-group.id
 }
 
 output "db_security_group_id" {
-  value = aws_security_group.security-groups["db"].id
+  value = aws_security_group.db-security-group.id
+}
+
+output "lb_security_group_id" {
+  value = aws_security_group.lb-security-group.id
 }
 
 output "tag_name" {
