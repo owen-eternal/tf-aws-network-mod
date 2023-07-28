@@ -10,3 +10,5 @@ variable "web_server_port" {}
 
 variable "db_server_port" {}
 
+variable "ipaddr" {}
+
