@@ -2,6 +2,16 @@
 ############## RESOURCES #################
 ##########################################
 
+locals {
+  databases = {
+    "postgresql" = 5432
+    "mysql" = 3306
+    "mongodb" = 27017
+  }
+  db_http_port = coalesce(var.db_server_port, local.databases[var.database])
+  web_http_port = coalesce(var.web_server_port, 80)
+}
+
 resource "aws_security_group" "lb-security-group" {
 
   name        = "${var.project_name}_lb_firewall"
@@ -10,8 +20,8 @@ resource "aws_security_group" "lb-security-group" {
 
   ingress {
     description = "Allow traffic from the internet"
-    from_port   = var.web_server_port
-    to_port     = var.web_server_port
+    from_port   = local.web_http_port
+    to_port     = local.web_http_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -44,8 +54,8 @@ resource "aws_security_group" "web-security-group" {
 
   ingress {
     description = "Allow traffic from Loadbalancer SG"
-    from_port   = var.web_server_port
-    to_port     = var.web_server_port
+    from_port   = local.web_http_port
+    to_port     = local.web_http_port
     protocol    = "tcp"
     security_groups = [aws_security_group.lb-security-group.id]
   }
@@ -86,8 +96,8 @@ resource "aws_security_group" "db-security-group" {
 
   ingress {
     description     = "Allow traffic from web SG"
-    from_port       = var.db_server_port
-    to_port         = var.db_server_port
+    from_port       = local.db_http_port
+    to_port         = local.db_http_port
     protocol        = "tcp"
     security_groups = [aws_security_group.web-security-group.id]
   }
