@@ -32,7 +32,9 @@ Additionally, the module provides optional input variables:
 
 `web_server_port:` This optional input of type `string` that allows users to specify a custom port for the Web Security Group. If left unset (or set as null), it defaults to port `80`, providing a convenient default value.
 
-`db_server_port:` This optional input of type `string` that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
+`database:` is a required input of type `string` that permits users to define a database port for the DB Security Group. supports `mysql`, `postgresql`, `mongodb`
+
+`db_server_port:` is an optional input of type `string` that permits users to define a custom port for the DB Security Group. If set, it overrides `database` else if set to `null` it defaults to `database`.
 
 `ipaddr` is a required input of type `string`, enabling users to specify the IP address of the host that will access the servers via SSH. This parameter is essential for establishing secure remote access to the servers and managing the infrastructure effectively.
 
