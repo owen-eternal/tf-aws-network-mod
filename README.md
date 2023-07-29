@@ -1,5 +1,7 @@
 # TF-AWS-NETWORK-MOD
 
+![tf-network](https://github.com/owen-eternal/tf-aws-network-mod/assets/68030544/6b1db82b-a553-46b5-8311-de6b01a58f92)
+
 ## Infrastructure
 
 The purpose of this module is to provision a specific infrastructure with the following components:
