@@ -34,6 +34,8 @@ Additionally, the module provides optional input variables:
 
 `db_server_port:` This optional input of type `string` that permits users to define a custom port for the Database Security Group. If not specified (or set as null), it defaults to port `80`.
 
+`ipaddr` is a required input of type `string`, enabling users to specify the IP address of the host that will access the servers via SSH. This parameter is essential for establishing secure remote access to the servers and managing the infrastructure effectively.
+
 By utilizing these input variables, users have the flexibility to tailor the module's behavior to their specific requirements and create VPC networks with custom configurations and security group port settings.
 
 usage:
@@ -70,9 +72,15 @@ usage:
 
 `web_route_table_id:` Parameter of type `string`, used to reference the Public web route table IDs. By providing this value, users can effectively direct network traffic from the internet to the web subnets, facilitating accessibility to their web applications.
 
-`web_security_group_id:` Parameter of type `string` and allows users to reference the security group dedicated to web servers. It provides an additional layer of security by controlling inbound and outbound traffic for web applications.
+`web_security_group_id:` Parameter of type `string` and allows users to reference the security group dedicated to web servers.
 
-`db_security_group_id:` Parameter of type `string`, serves as a reference to the security group designated for database servers. By utilizing this value, users can manage access controls and secure communication for their database resources.
+`lb_security_group_id:` Parameter of type `string` and allows users to reference the security group dedicated to the load balancer.
+
+`db_security_group_id:` Parameter of type `string`, serves as a reference to the security group designated for database servers.
+
+`availability_zones:` Parameter of type `string`, used to specify the availability zones where resources will be provisioned.
+
+`tag_name:` paramete of type `string`, it combines the project name and environment to create a unique identifier for a logical grouping of resources within the same environment. It aids in easily identifying and organizing resources associated with a specific project within a given environment.
 
 usage:
 ```hcl
