@@ -41,3 +41,7 @@ output "tag_name" {
 output "availability_zones" {
   value = local.availability_zones
 }
+
+output "application_port" {
+  value = local.web_http_port
+}
