@@ -84,7 +84,9 @@ usage:
 
 `availability_zones:` Parameter of type `string`, used to specify the availability zones where resources will be provisioned.
 
-`tag_name:` paramete of type `string`, it combines the project name and environment to create a unique identifier for a logical grouping of resources within the same environment. It aids in easily identifying and organizing resources associated with a specific project within a given environment.
+`tag_name:` parameter of type `string`, it combines the project name and environment to create a unique identifier for a logical grouping of resources within the same environment. It aids in easily identifying and organizing resources associated with a specific project within a given environment.
+
+`application_port:` parameter of type `string`, specifies the port the application is exposed to.
 
 usage:
 ```hcl
