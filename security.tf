@@ -46,6 +46,40 @@ resource "aws_security_group" "lb-security-group" {
   }
 }
 
+resource "aws_security_group" "ecs-security-group" {
+
+  name        = "${var.project_name}_ecs_firewall"
+  description = "Control inbound/outbound traffic in and out of the ecs cluster"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description = "Allow HTTP traffic from the load balancer."
+    from_port   = local.web_http_port
+    to_port     = local.web_http_port
+    protocol    = "tcp"
+    cidr_blocks = [aws_security_group.lb-security-group.id]
+  }
+
+  ingress {
+    description = "Allow TLS traffic from the load balancer."
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_security_group.lb-security-group.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${local.tag_name}-ecs-sg"
+  }
+}
+
 resource "aws_security_group" "web-security-group" {
 
   name        = "${var.project_name}_web_firewall"
@@ -53,7 +87,7 @@ resource "aws_security_group" "web-security-group" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    description = "Allow traffic from Loadbalancer SG"
+    description = "Allow HTTP traffic from ECS cluster."
     from_port   = local.web_http_port
     to_port     = local.web_http_port
     protocol    = "tcp"
@@ -61,7 +95,7 @@ resource "aws_security_group" "web-security-group" {
   }
 
   ingress {
-    description = "Allow TLS traffic from Loadbalancer SG"
+    description = "Allow TLS traffic from ECS cluster."
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -69,7 +103,7 @@ resource "aws_security_group" "web-security-group" {
   }
 
   ingress {
-    description = "Allow traffic from private IP address"
+    description = "Allow traffic from private IP address."
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
